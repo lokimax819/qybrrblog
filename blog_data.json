@@ -1,0 +1,128 @@
+{
+  "gaming": [
+    {
+      "title": "The Future of Gaming in Kenya: Rise of Mobile Gaming",
+      "link": "https://example.com/gaming/mobile-gaming-kenya",
+      "summary": "Mobile gaming is taking Kenya by storm, with over 12 million active players across the country. Local developers are creating culturally relevant games...",
+      "published": "2023-03-15",
+      "image": "https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "source": "techweez.com",
+      "category": "gaming",
+      "id": "sample001"
+    }
+  ],
+  "events": [
+    {
+      "title": "Nairobi International Jazz Festival 2023",
+      "link": "https://example.com/events/nairobi-jazz-2023",
+      "summary": "Experience the world's finest jazz musicians at Kenya's premier music event, featuring both local and international artists...",
+      "published": "2023-03-10",
+      "image": "https://images.unsplash.com/photo-1501386761578-eac5c94b800a?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "source": "kenyabuzz.com",
+      "category": "events",
+      "id": "sample002"
+    }
+  ],
+  "trending": [
+    {
+      "title": "Kenya's Tech Revolution: How Startups Are Changing the Economy",
+      "link": "https://example.com/trending/kenya-tech-revolution",
+      "summary": "Kenya's tech startup ecosystem continues to grow, with investments reaching record levels in the first quarter of 2023...",
+      "published": "2023-03-18",
+      "image": "https://images.unsplash.com/photo-1534665482403-a909d0d97c67?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "source": "citizentv.co.ke",
+      "category": "trending",
+      "id": "sample003"
+    }
+  ],
+  "ai": [
+    {
+      "title": "How AI is Transforming Healthcare in East Africa",
+      "link": "https://example.com/ai/healthcare-east-africa",
+      "summary": "AI-powered diagnostic tools are helping bridge the healthcare gap in rural Kenya, with mobile applications that can detect common illnesses...",
+      "published": "2023-03-20",
+      "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "source": "technews.africa",
+      "category": "ai",
+      "id": "sample004"
+    }
+  ],
+  "soccer": [
+    {
+      "title": "Kenyan Premier League: Title Race Heats Up",
+      "link": "https://example.com/soccer/kpl-title-race",
+      "summary": "With just five games remaining, three teams are separated by just two points at the top of the Kenyan Premier League...",
+      "published": "2023-03-25",
+      "image": "https://images.unsplash.com/photo-1522778119026-d647f0596c20?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+      "source": "sportpesa.co.ke",
+      "category": "soccer",
+      "id": "sample005"
+    }
+  ],
+  "news": [
+    {
+      "title": "Kenyan Economic Growth Surpasses Expectations",
+      "link": "https://www.nation.africa/kenya/news/economy-growth",
+      "summary": "Kenya's economy has shown remarkable resilience with growth exceeding analyst predictions for the second quarter...",
+      "date": "2023-10-15",
+      "image": "https://static.vecteezy.com/system/resources/thumbnails/000/295/608/small/4.jpg",
+      "source": "nation.africa",
+      "category": "news",
+      "id": "sample001"
+    },
+    {
+      "title": "New Infrastructure Projects Announced for Nairobi",
+      "link": "https://www.the-star.co.ke/news/infrastructure",
+      "summary": "The government has unveiled plans for major infrastructure developments in the capital city aimed at easing congestion...",
+      "date": "2023-10-12",
+      "image": "https://static.vecteezy.com/system/resources/thumbnails/000/295/608/small/4.jpg",
+      "source": "the-star.co.ke",
+      "category": "news",
+      "id": "sample002"
+    }
+  ],
+  "tech": [
+    {
+      "title": "Safaricom Launches New 5G Services Across Major Cities",
+      "link": "https://techweez.com/2023/5g-network-expansion",
+      "summary": "Kenya's largest telecom provider is expanding high-speed connectivity options to more Kenyans with new infrastructure...",
+      "date": "2023-10-14",
+      "image": "https://static.vecteezy.com/system/resources/thumbnails/023/944/577/small/technology-background-circuit-board-electronic-system-digital-tech-design-vector.jpg",
+      "source": "techweez.com",
+      "category": "tech",
+      "id": "sample003"
+    },
+    {
+      "title": "Kenyan Startups Attract Record Foreign Investment",
+      "link": "https://www.businessdailyafrica.com/bd/corporate/technology",
+      "summary": "Tech startups in Kenya have secured unprecedented funding rounds from international investors seeking to tap into the growing innovation hub...",
+      "date": "2023-10-10",
+      "image": "https://static.vecteezy.com/system/resources/thumbnails/023/944/577/small/technology-background-circuit-board-electronic-system-digital-tech-design-vector.jpg",
+      "source": "businessdailyafrica.com",
+      "category": "tech",
+      "id": "sample004"
+    }
+  ],
+  "business": [
+    {
+      "title": "Kenya Shilling Shows Strong Recovery Against Dollar",
+      "link": "https://kenyanwallstreet.com/currency-market",
+      "summary": "The local currency has recorded significant gains in recent weeks, improving economic outlook for importers and consumers...",
+      "date": "2023-10-13",
+      "image": "https://static.vecteezy.com/system/resources/thumbnails/004/893/886/small/investment-and-stock-market-business-graph-data-concept-financial-data-on-a-monitor-as-financial-figures-forex-charts-for-financial-business-concepts-3d-illustration-vector.jpg",
+      "source": "kenyanwallstreet.com",
+      "category": "business",
+      "id": "sample005"
+    },
+    {
+      "title": "Nairobi Securities Exchange Hits 3-Year High",
+      "link": "https://www.businessdailyafrica.com/bd/markets/capital-markets",
+      "summary": "Investor confidence continues to grow as the Nairobi bourse records impressive performance across multiple sectors...",
+      "date": "2023-10-11",
+      "image": "https://static.vecteezy.com/system/resources/thumbnails/004/893/886/small/investment-and-stock-market-business-graph-data-concept-financial-data-on-a-monitor-as-financial-figures-forex-charts-for-financial-business-concepts-3d-illustration-vector.jpg",
+      "source": "businessdailyafrica.com",
+      "category": "business",
+      "id": "sample006"
+    }
+  ]
+}

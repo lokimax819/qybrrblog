@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Qybrr</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            background-color: #fafafa;
+        }
+
+        /* Navigation styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.2s ease;
+        }
+
+        .brand:hover {
+            color: #007bff;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #007bff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links .active a {
+            color: #007bff;
+        }
+
+        .nav-links .active a::after {
+            width: 100%;
+        }
+
+        /* Dropdown menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            min-width: 180px;
+            padding: 0.5rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 101;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1.25rem;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f5f5f5;
+            color: #007bff;
+        }
+
+        /* Page content */
+        .page-content {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #007bff;
+            border-radius: 2px;
+        }
+
+        .contact-intro {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        /* Contact form */
+        .contact-form {
+            padding-right: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .btn-submit {
+            display: inline-block;
+            background: #007bff;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            border: none;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Contact info */
+        .contact-info {
+            border-left: 1px solid #eee;
+            padding-left: 2rem;
+        }
+
+        .contact-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .contact-item {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .contact-icon {
+            font-size: 1.2rem;
+            color: #007bff;
+            min-width: 30px;
+            margin-top: 0.2rem;
+        }
+
+        .contact-text {
+            flex: 1;
+        }
+
+        .contact-text h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+            color: #444;
+        }
+
+        .contact-text p, .contact-text a {
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .contact-text a {
+            text-decoration: none;
+            color: #007bff;
+            transition: color 0.2s ease;
+        }
+
+        .contact-text a:hover {
+            color: #0056b3;
+            text-decoration: underline;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: #f5f5f5;
+            border-radius: 50%;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:hover {
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .social-link.twitter:hover {
+            background: #1DA1F2;
+        }
+
+        .social-link.facebook:hover {
+            background: #4267B2;
+        }
+
+        .social-link.linkedin:hover {
+            background: #0077B5;
+        }
+
+        .social-link.instagram:hover {
+            background: #C13584;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            text-align: center;
+            color: #666;
+            background-color: #fff;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 0 15px;
+            }
+
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+                margin-top: 1rem;
+                text-align: center;
+            }
+
+            .page-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .contact-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .contact-form {
+                padding-right: 0;
+                border-bottom: 1px solid #eee;
+                padding-bottom: 2rem;
+            }
+
+            .contact-info {
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background-color: #f5f5f5;
+                margin: 0.5rem 0;
+                border-radius: 8px;
+                width: 100%;
+            }
+
+            .dropdown-toggle::after {
+                display: none;
+            }
+        }
+    </style>
+    <!-- Add Font Awesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="brand">Qybrr</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle">Categories <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i></a>
+                <div class="dropdown-menu">
+                    <a href="index.html#news" class="dropdown-item">News</a>
+                    <a href="index.html#tech" class="dropdown-item">Tech</a>
+                    <a href="index.html#business" class="dropdown-item">Business</a>
+                    <a href="index.html#gaming" class="dropdown-item">Gaming</a>
+                    <a href="index.html#events" class="dropdown-item">Events</a>
+                    <a href="index.html#trending" class="dropdown-item">Trending</a>
+                    <a href="index.html#ai" class="dropdown-item">AI</a>
+                    <a href="index.html#soccer" class="dropdown-item">Soccer</a>
+                </div>
+            </li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="about.html">About</a></li>
+            <li class="active"><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+        <h1 class="page-title">Contact Us</h1>
+        <p class="contact-intro">Have questions, feedback, or just want to say hello? We'd love to hear from you! Fill out the form below or use our contact information to get in touch with our team.</p>
+        
+        <div class="contact-container">
+            <div class="contact-form">
+                <h2>Send Us a Message</h2>
+                <form id="contactForm" action="#" method="POST">
+                    <div class="form-group">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="message" class="form-label">Your Message</label>
+                        <textarea id="message" name="message" class="form-control" required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-submit">Send Message</button>
+                </form>
+            </div>
+            
+            <div class="contact-info">
+                <h2>Contact Information</h2>
+                
+                <div class="contact-item">
+                    <span class="contact-icon"><i class="fas fa-map-marker-alt"></i></span>
+                    <div class="contact-text">
+                        <h3>Location</h3>
+                        <p>Westlands Business Center<br>Nairobi, Kenya</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon"><i class="fas fa-envelope"></i></span>
+                    <div class="contact-text">
+                        <h3>Email Us</h3>
+                        <p><a href="mailto:info@qybrr.com">info@qybrr.com</a></p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon"><i class="fas fa-phone"></i></span>
+                    <div class="contact-text">
+                        <h3>Call Us</h3>
+                        <p><a href="tel:+254712345678">+254 712 345 678</a></p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon"><i class="fas fa-clock"></i></span>
+                    <div class="contact-text">
+                        <h3>Business Hours</h3>
+                        <p>Monday - Friday: 9:00 AM - 5:00 PM<br>
+                        Saturday: 10:00 AM - 2:00 PM<br>
+                        Sunday: Closed</p>
+                    </div>
+                </div>
+                
+                <div class="contact-item">
+                    <span class="contact-icon"><i class="fas fa-share-alt"></i></span>
+                    <div class="contact-text">
+                        <h3>Follow Us</h3>
+                        <div class="social-links">
+                            <a href="#" class="social-link twitter"><i class="fab fa-twitter"></i></a>
+                            <a href="#" class="social-link facebook"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-link linkedin"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#" class="social-link instagram"><i class="fab fa-instagram"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2023 Qybrr. All rights reserved.</p>
+        <p><a href="privacy.html">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        // Simple form validation and submission
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // You would normally send the form data to a server here
+            // For this example, we'll just show a success message
+            
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html> 

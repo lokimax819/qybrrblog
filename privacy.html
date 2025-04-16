@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Policy | Qybrr</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            background-color: #fafafa;
+        }
+
+        /* Navigation styles */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: #333;
+            transition: color 0.2s ease;
+        }
+
+        .brand:hover {
+            color: #007bff;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #666;
+            font-weight: 500;
+            transition: color 0.2s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #007bff;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 0;
+            background-color: #007bff;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links .active a {
+            color: #007bff;
+        }
+
+        .nav-links .active a::after {
+            width: 100%;
+        }
+
+        /* Dropdown menu */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-toggle {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            min-width: 180px;
+            padding: 0.5rem 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            z-index: 101;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .dropdown-item {
+            display: block;
+            padding: 0.75rem 1.25rem;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .dropdown-item:hover {
+            background-color: #f5f5f5;
+            color: #007bff;
+        }
+
+        /* Page content */
+        .page-content {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: #333;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: #007bff;
+            border-radius: 2px;
+        }
+
+        .privacy-intro {
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .policy-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .policy-section h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .policy-section p {
+            margin-bottom: 1rem;
+            color: #555;
+        }
+
+        .policy-section ul, .policy-section ol {
+            margin: 1rem 0 1rem 2rem;
+            color: #555;
+        }
+
+        .policy-section li {
+            margin-bottom: 0.5rem;
+        }
+
+        .last-updated {
+            font-style: italic;
+            color: #777;
+            margin-top: 3rem;
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            border-top: 1px solid #eee;
+            padding: 2rem 0;
+            margin-top: 4rem;
+            text-align: center;
+            color: #666;
+            background-color: #fff;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            body {
+                padding: 0 15px;
+            }
+
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+                width: 100%;
+                margin-top: 1rem;
+                text-align: center;
+            }
+
+            .page-content {
+                padding: 2rem 1.5rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                background-color: #f5f5f5;
+                margin: 0.5rem 0;
+                border-radius: 8px;
+                width: 100%;
+            }
+
+            .dropdown-toggle::after {
+                display: none;
+            }
+        }
+    </style>
+    <!-- Add Font Awesome for social media icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <nav>
+        <a href="/" class="brand">Qybrr</a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle">Categories <i class="fas fa-chevron-down" style="font-size: 0.8rem;"></i></a>
+                <div class="dropdown-menu">
+                    <a href="index.html#news" class="dropdown-item">News</a>
+                    <a href="index.html#tech" class="dropdown-item">Tech</a>
+                    <a href="index.html#business" class="dropdown-item">Business</a>
+                    <a href="index.html#gaming" class="dropdown-item">Gaming</a>
+                    <a href="index.html#events" class="dropdown-item">Events</a>
+                    <a href="index.html#trending" class="dropdown-item">Trending</a>
+                    <a href="index.html#ai" class="dropdown-item">AI</a>
+                    <a href="index.html#soccer" class="dropdown-item">Soccer</a>
+                </div>
+            </li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="page-content">
+        <h1 class="page-title">Privacy Policy</h1>
+        
+        <p class="privacy-intro">At Qybrr, we are committed to protecting your privacy and providing a safe, secure experience. This Privacy Policy explains how we collect, use, and safeguard your information when you visit our website.</p>
+        
+        <section class="policy-section">
+            <h2>Information We Collect</h2>
+            <p>We collect information in the following ways:</p>
+            <ul>
+                <li><strong>Information you provide:</strong> We may collect personal information that you voluntarily provide when contacting us through our contact form, including your name and email address.</li>
+                <li><strong>Automatically collected information:</strong> When you visit our website, we automatically collect certain information about your device and browsing actions, including IP address, browser type, operating system, and pages visited.</li>
+                <li><strong>Cookies and similar technologies:</strong> We use cookies and similar tracking technologies to enhance your browsing experience and collect information about how you use our website.</li>
+            </ul>
+        </section>
+        
+        <section class="policy-section">
+            <h2>How We Use Your Information</h2>
+            <p>We use the information we collect for various purposes, including:</p>
+            <ul>
+                <li>To provide, maintain, and improve our website</li>
+                <li>To respond to your comments, questions, and requests</li>
+                <li>To monitor and analyze usage patterns and trends</li>
+                <li>To protect our website and users from unauthorized access</li>
+                <li>To comply with legal obligations</li>
+            </ul>
+        </section>
+        
+        <section class="policy-section">
+            <h2>Information Sharing and Disclosure</h2>
+            <p>We do not sell, rent, or share your personal information with third parties except in the following circumstances:</p>
+            <ul>
+                <li><strong>With your consent:</strong> We may share your information when you have given us permission to do so.</li>
+                <li><strong>For legal reasons:</strong> We may disclose your information if required by law or in response to valid legal requests.</li>
+                <li><strong>Service providers:</strong> We may share information with trusted third-party service providers who help us operate our website, such as hosting providers and analytics services.</li>
+            </ul>
+        </section>
+        
+        <section class="policy-section">
+            <h2>Data Security</h2>
+            <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the internet or electronic storage is 100% secure, and we cannot guarantee absolute security.</p>
+        </section>
+        
+        <section class="policy-section">
+            <h2>Third-Party Links</h2>
+            <p>Our website contains links to third-party websites, including news sources that we aggregate content from. We are not responsible for the privacy practices or content of these third-party sites. We encourage you to review the privacy policies of any third-party websites you visit.</p>
+        </section>
+        
+        <section class="policy-section">
+            <h2>Your Rights</h2>
+            <p>Depending on your location, you may have certain rights regarding your personal information, including:</p>
+            <ul>
+                <li>The right to access, update, or delete your information</li>
+                <li>The right to object to or restrict processing of your information</li>
+                <li>The right to data portability</li>
+                <li>The right to withdraw consent at any time</li>
+            </ul>
+            <p>To exercise any of these rights, please contact us using the information provided in the "Contact Us" section below.</p>
+        </section>
+        
+        <section class="policy-section">
+            <h2>Children's Privacy</h2>
+            <p>Our website is not intended for children under the age of 13. We do not knowingly collect personal information from children under 13. If you believe we have collected information from a child under 13, please contact us, and we will promptly remove the information.</p>
+        </section>
+        
+        <section class="policy-section">
+            <h2>Changes to This Privacy Policy</h2>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date. You are advised to review this Privacy Policy periodically for any changes.</p>
+        </section>
+        
+        <section class="policy-section">
+            <h2>Contact Us</h2>
+            <p>If you have any questions or concerns about our Privacy Policy or our data practices, please contact us at:</p>
+            <p>
+                Email: <a href="mailto:privacy@qybrr.com">privacy@qybrr.com</a><br>
+                Address: Westlands Business Center, Nairobi, Kenya
+            </p>
+        </section>
+        
+        <p class="last-updated">Last Updated: October 20, 2023</p>
+    </div>
+
+    <footer class="footer">
+        <p>© 2023 Qybrr. All rights reserved.</p>
+        <p><a href="privacy.html" class="active">Privacy Policy</a> | <a href="terms.html">Terms of Service</a></p>
+    </footer>
+</body>
+</html> 
