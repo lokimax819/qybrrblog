@@ -252,17 +252,19 @@ def scrape_site(site_config):
     headers = {'User-Agent': user_agent}
     
     try:
-        # Allow for insecure connection when needed (for some sites with SSL issues)
-        response = requests.get(url, headers=headers, verify=False, timeout=15)
+        # Allow insecure connection, increase timeout slightly
+        response = requests.get(url, headers=headers, verify=False, timeout=30) # Increased to 30 seconds
         response.raise_for_status()  # Raise an exception for HTTP errors
         
         soup = BeautifulSoup(response.text, 'html.parser')
         articles = soup.select(site_config["article_selector"])
         
         results = []
-        for article in articles[:5]:  # Limit to 5 articles per site
+        # Limit articles per site (consider reducing if scraping many sites)
+        article_limit = site_config.get("limit", 5) 
+        for article in articles[:article_limit]:  
             try:
-                # Extract article details with more robust error handling
+                # Extract article details (keep existing robust error handling)
                 title_element = article.select_one(site_config["title_selector"])
                 title = title_element.get_text().strip() if title_element else "No title available"
                 
@@ -274,36 +276,40 @@ def scrape_site(site_config):
                 
                 # Handle relative URLs
                 if link and not (link.startswith('http://') or link.startswith('https://')):
-                    base_url = urlparse(url)
-                    link = f"{base_url.scheme}://{base_url.netloc}{link}"
+                    link = make_absolute_url(url, link) # Use helper function
                 
-                # Skip if link is invalid
-                if not link or link.startswith('javascript:') or link == '#':
+                # Skip if link is invalid or non-HTTP(S)
+                if not link or not link.startswith(('http://', 'https://')):
+                    print(f"  Skipping article with invalid link: {link}")
                     continue
                 
                 image_element = article.select_one(site_config["image_selector"])
-                image = image_element.get('src') if image_element and image_element.get('src') else ""
-                
-                # Handle data-src for lazy-loaded images
-                if not image and image_element:
-                    for attr in ['data-src', 'data-lazy-src', 'data-original']:
-                        if image_element.get(attr):
-                            image = image_element.get(attr)
+                image = ""
+                if image_element:
+                    # Prioritize data-src attributes for lazy-loaded images
+                    for attr in ['data-src', 'data-lazy-src', 'data-original', 'src']:
+                        img_url = image_element.get(attr)
+                        if img_url:
+                            image = img_url.strip()
                             break
                 
                 # Handle relative image URLs
-                if image and not (image.startswith('http://') or image.startswith('https://')):
-                    base_url = urlparse(url)
-                    image = f"{base_url.scheme}://{base_url.netloc}{image if image.startswith('/') else '/' + image}"
-                
+                if image and not image.startswith(('http://', 'https://')):
+                     image = make_absolute_url(url, image) # Use helper function
+
+                # Use fallback image if no image found or if it's invalid
+                category_for_fallback = next((cat for cat, sites in SITES.items() if any(s['url'] == site_config['url'] for s in sites)), "news")
+                if not image or not image.startswith(('http://', 'https://')):
+                    image = FALLBACK_IMAGES.get(category_for_fallback, FALLBACK_IMAGES.get("news"))
+
                 date_element = article.select_one(site_config["date_selector"])
                 date = date_element.get_text().strip() if date_element else "Recent"
                 
                 # Create post ID using hash of link
                 post_id = hashlib.md5(link.encode()).hexdigest()
                 
-                # Get category from current iteration
-                category = next((cat for cat, sites in SITES.items() if any(s['url'] == site_config['url'] for s in sites)), "news")
+                # Get category (already determined for fallback image)
+                category = category_for_fallback
                 
                 # Only add articles with at least a title and link
                 if title and link:
@@ -311,24 +317,27 @@ def scrape_site(site_config):
                         "title": title,
                         "summary": summary,
                         "link": link,
-                        "image": image or FALLBACK_IMAGES.get(category, FALLBACK_IMAGES.get("news")),
+                        "image": image,
                         "date": date,
                         "source": urlparse(url).netloc,
                         "category": category,
                         "id": post_id
                     })
             except Exception as e:
-                print(f"Error extracting article details: {e}")
-                continue
+                print(f"  Error extracting article details from {url}: {e}") # Add URL to error
+                continue # Continue to next article
                 
         return results
     
+    except requests.exceptions.Timeout:
+        print(f"Error: Timeout while scraping {url} after 30 seconds.")
+        return [] # Return empty list on timeout
     except requests.exceptions.RequestException as e:
         print(f"Error scraping {url}: {e}")
         return []
-    
     except Exception as e:
-        print(f"Unexpected error scraping {url}: {e}")
+        # Catch broader exceptions during initial request/soup parsing
+        print(f"Unexpected error processing {url}: {e}")
         return []
 
 def create_sample_data():
