@@ -514,84 +514,127 @@ def create_sample_data():
     return sample_data
 
 def scrape_all_sites():
-    """Scrape all configured sites"""
+    """Scrape all configured sites and ensure data persistence."""
     all_posts = {}
     
     # Initialize or load existing data
     if os.path.exists(DATA_FILE):
-        with open(DATA_FILE, 'r') as f:
-            try:
+        try:
+            with open(DATA_FILE, 'r') as f:
                 all_posts = json.load(f)
-            except:
+            # Basic validation: Ensure it's a dict
+            if not isinstance(all_posts, dict):
+                print(f"Warning: Data in {DATA_FILE} is not a dictionary. Initializing fresh.")
                 all_posts = {category: [] for category in SITES.keys()}
+        except json.JSONDecodeError:
+            print(f"Warning: Could not decode JSON from {DATA_FILE}. Initializing fresh.")
+            all_posts = {category: [] for category in SITES.keys()}
+        except Exception as e:
+            print(f"Warning: Error loading {DATA_FILE}: {e}. Initializing fresh.")
+            all_posts = {category: [] for category in SITES.keys()}
     else:
+        print(f"Data file {DATA_FILE} not found. Initializing fresh.")
         all_posts = {category: [] for category in SITES.keys()}
     
-    # Add sample data for empty categories to ensure we always have content
-    sample_data = create_sample_data()
+    # Ensure all expected categories exist
     for category in SITES.keys():
-        if category not in all_posts or not all_posts[category]:
-            all_posts[category] = sample_data.get(category, [])
-    
-    # Process each category
+        if category not in all_posts or not isinstance(all_posts.get(category), list):
+            all_posts[category] = []
+
+    # Process each category: Scrape and merge
     for category, sites in SITES.items():
-        new_posts = []
-        
+        new_posts_for_category = []
+        print(f"--- Processing category: {category} ---")
         for site_config in sites:
             print(f"Scraping {site_config['url']} for {category}...")
-            site_posts = scrape_site(site_config)
-            new_posts.extend(site_posts)
-            
+            try:
+                site_posts = scrape_site(site_config)
+                if site_posts:
+                    new_posts_for_category.extend(site_posts)
+                    print(f"  Found {len(site_posts)} posts.")
+                else:
+                    print(f"  No posts found.")
+            except Exception as e:
+                print(f"  Error scraping site {site_config['url']}: {e}")
             # Be nice to servers
-            time.sleep(2)
+            time.sleep(random.uniform(1, 3)) # Add slight random delay
         
-        # Combine with existing posts, remove duplicates
+        # Combine with existing posts for the category, remove duplicates
         existing_ids = {post['id'] for post in all_posts.get(category, [])}
-        filtered_new_posts = [post for post in new_posts if post['id'] not in existing_ids]
+        filtered_new_posts = [post for post in new_posts_for_category if post.get('id') and post['id'] not in existing_ids]
         
-        if category not in all_posts:
-            all_posts[category] = []
-            
-        all_posts[category] = filtered_new_posts + all_posts[category]
+        print(f"  Added {len(filtered_new_posts)} new unique posts for {category}.")
         
-        # Keep top 20 posts per category
+        # Prepend new posts and keep top 20
+        all_posts[category] = filtered_new_posts + all_posts.get(category, [])
         all_posts[category] = all_posts[category][:20]
-    
+
+    # Add sample data ONLY if a category is still empty AFTER scraping
+    sample_data = create_sample_data()
+    for category in SITES.keys():
+        if not all_posts.get(category): # Check if list is empty or category missing
+            print(f"Category '{category}' still empty after scraping. Adding sample data.")
+            all_posts[category] = sample_data.get(category, [])[:1] # Add max 1 sample post
+        elif len(all_posts[category]) < 1:
+             print(f"Category '{category}' has less than 1 post after scraping. Topping up with sample data.")
+             existing_ids = {post['id'] for post in all_posts.get(category, [])}
+             sample_posts_needed = [p for p in sample_data.get(category, []) if p['id'] not in existing_ids]
+             all_posts[category].extend(sample_posts_needed)
+             all_posts[category] = all_posts[category][:1] # Ensure only 1 post total
+
     # Save updated data
-    with open(DATA_FILE, 'w') as f:
-        json.dump(all_posts, f, indent=2)
-    
+    try:
+        with open(DATA_FILE, 'w') as f:
+            json.dump(all_posts, f, indent=2)
+        print(f"Data saved successfully to {DATA_FILE}.")
+    except Exception as e:
+        print(f"Error saving data to {DATA_FILE}: {e}")
+
     return all_posts
 
 def generate_html():
     """Generate HTML with the latest posts"""
-    if not os.path.exists(DATA_FILE):
-        print("No data file found. Creating sample data...")
-        all_posts = create_sample_data()
-        with open(DATA_FILE, 'w') as f:
-            json.dump(all_posts, f, indent=2)
+    all_posts = {}
+    # Load data generated by scrape_all_sites
+    if os.path.exists(DATA_FILE):
+        try:
+            with open(DATA_FILE, 'r') as f:
+                all_posts = json.load(f)
+        except json.JSONDecodeError:
+            print(f"Error: Could not decode JSON from {DATA_FILE}. Check the file content.")
+            return # Stop if data file is corrupted
+        except Exception as e:
+            print(f"Error loading {DATA_FILE}: {e}")
+            return # Stop if file cannot be loaded
     else:
-        with open(DATA_FILE, 'r') as f:
-            all_posts = json.load(f)
-    
+        print(f"Error: Data file {DATA_FILE} not found. Run scraper first.")
+        return # Stop if data file doesn't exist
+
     # Read the existing HTML template
-    with open('index.html', 'r', encoding='utf-8') as f:
-        html_content = f.read()
-    
+    try:
+        with open('index.html', 'r', encoding='utf-8') as f:
+            html_content = f.read()
+    except FileNotFoundError:
+        print("Error: index.html template not found.")
+        return
+    except Exception as e:
+        print(f"Error reading index.html: {e}")
+        return
+
     # Find where to inject the posts
     start_marker = '<main id="blog-posts">'
     end_marker = '</main>'
-    
+
     start_idx = html_content.find(start_marker) + len(start_marker)
     end_idx = html_content.find(end_marker)
-    
-    if start_idx == -1 or end_idx == -1:
-        print("Couldn't find markers in HTML file")
+
+    if start_idx == -1 + len(start_marker) or end_idx == -1:
+        print("Error: Couldn't find start/end markers in index.html")
         return
-    
+
     # Generate HTML for posts
     posts_html = ""
-    
+
     # Function to create HTML for a single post
     def create_post_html(post):
         # Add default values for all fields to prevent KeyErrors
@@ -629,25 +672,31 @@ def generate_html():
         """
     
     # Generate 1 post for each category
-    for category in all_posts.keys():
-        # Ensure the category exists and has posts before trying to access index 0
-        if category in all_posts and all_posts[category]: 
-            posts = all_posts[category][:1]  # Get only the top 1 post
-            for post in posts:
-                posts_html += create_post_html(post)
-        else:
-            print(f"Skipping category {category} - no posts found.") # Optional: Log if a category is empty
-    
+    if isinstance(all_posts, dict):
+        for category in all_posts.keys():
+            # Ensure the category exists and has posts before trying to access index 0
+            if category in all_posts and isinstance(all_posts[category], list) and all_posts[category]:
+                posts = all_posts[category][:1]  # Get only the top 1 post
+                for post in posts:
+                    posts_html += create_post_html(post)
+            else:
+                print(f"Skipping category {category} - no posts found or data malformed.")
+    else:
+        print(f"Error: Expected all_posts to be a dictionary, but got {type(all_posts)}")
+        return
+
     # Update the HTML file
     new_html = html_content[:start_idx] + posts_html + html_content[end_idx:]
-    
+
     # Write to a new file first (safer)
-    with open('index_new.html', 'w', encoding='utf-8') as f:
-        f.write(new_html)
-    
-    # If successful, replace the original
-    os.replace('index_new.html', 'index.html')
-    print(f"Blog updated with new content at {datetime.datetime.now()}")
+    try:
+        with open('index_new.html', 'w', encoding='utf-8') as f:
+            f.write(new_html)
+        # If successful, replace the original
+        os.replace('index_new.html', 'index.html')
+        print(f"Blog HTML updated successfully at {datetime.datetime.now()}")
+    except Exception as e:
+        print(f"Error writing or replacing index.html: {e}")
 
 def update_blog():
     """Main function to update the blog"""
