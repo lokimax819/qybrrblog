@@ -628,11 +628,15 @@ def generate_html():
         </article>
         """
     
-    # Generate 2 posts for each category (changed from 5 to 2)
+    # Generate 1 post for each category
     for category in all_posts.keys():
-        posts = all_posts[category][:2]  # Get top 2 posts
-        for post in posts:
-            posts_html += create_post_html(post)
+        # Ensure the category exists and has posts before trying to access index 0
+        if category in all_posts and all_posts[category]: 
+            posts = all_posts[category][:1]  # Get only the top 1 post
+            for post in posts:
+                posts_html += create_post_html(post)
+        else:
+            print(f"Skipping category {category} - no posts found.") # Optional: Log if a category is empty
     
     # Update the HTML file
     new_html = html_content[:start_idx] + posts_html + html_content[end_idx:]
