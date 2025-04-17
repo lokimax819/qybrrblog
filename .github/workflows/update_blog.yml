@@ -1,0 +1,38 @@
+name: Update Blog Content
+
+on:
+  schedule:
+    # Runs every hour
+    - cron: '0 * * * *'
+  workflow_dispatch: # Allows manual triggering
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Or your preferred Python version
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run web scraper
+        run: python web_scraper.py
+
+      - name: Commit and push if changed
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add index.html blog_data.json
+          # Check if there are changes to commit
+          if ! git diff --staged --quiet; then
+            git commit -m "Automated content update"
+            git push origin master
+          else
+            echo "No changes detected."
+          fi
